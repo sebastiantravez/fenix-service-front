@@ -1,0 +1,28 @@
+/* ----------------------------------------------------------------------------------------------------- */
+/*  @ Import/write your custom styles here.
+/*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
+/* ----------------------------------------------------------------------------------------------------- */
+.mdc-floating-label--required::after {
+    content: "" !important
+}
+
+.pointer {
+    cursor: pointer;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.center{
+    text-align: center;
+}
+.center{
+    text-align: center;
+}
+.fondo{
+    background-color: #57c7c8 !important;
+}
+.fondo2{
+    background-color: #FBC344 !important;
+}

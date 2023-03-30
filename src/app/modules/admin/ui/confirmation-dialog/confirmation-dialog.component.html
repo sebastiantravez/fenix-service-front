@@ -1,0 +1,188 @@
+<!--FORMULARIO PARA GERENTE DE LA EMPRESA ENCARGADA-->
+<div class="flex flex-col flex-auto min-w-0" *ngIf="data.typeAlert == 'COMPANY_MANAGER'">
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <h5 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate center">
+                Gerente Empresa
+            </h5>
+        </div>
+    </div>
+    <!-- <fuse-alert class="mt-8" [appearance]="'soft'" [showIcon]="false" [type]="this.alertService.alert.type"
+         [name]="'alertBoxDialog'">
+        {{this.alertService.alert.message}}
+    </fuse-alert> -->
+    <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden"
+        [formGroup]="businessManagerForm">
+        <div class="flex flex-col gt-xs:flex-row">
+            <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto gt-xs:pr-3">
+                <mat-label>Nombre</mat-label>
+                <input [formControlName]="'name'" matInput>
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                <mat-error>
+                    Se requiere nombre
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto gt-xs:pl-3">
+                <mat-label>Apellido</mat-label>
+                <input [formControlName]="'lastName'" matInput>
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                <mat-error>
+                    Se requiere apellido
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex">
+            <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto gt-xs:pl-3">
+                <mat-label>Documento</mat-label>
+                <input [formControlName]="'document'" matInput type="number">
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:identification'"></mat-icon>
+                <mat-error>
+                    Se requiere documento
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex">
+            <mat-form-field class="w-full">
+                <mat-label>
+                    Dirección de correo electrónico</mat-label>
+                <input [formControlName]="'email'" matInput>
+                <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                <mat-error>
+                    Se requiere dirección de correo electrónico
+                </mat-error>
+                <mat-error>
+                    Por favor, introduce una dirección de correo electrónico válida
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex items-center justify-end -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+            <button (click)="closeDialog()" type="reset" mat-button [color]="'warn'">
+                Cancelar
+            </button>
+            <button (click)="saveCompanyManager(data)" class="px-6 ml-3" mat-flat-button [color]="'primary'">
+                Activar
+            </button>
+        </div>
+    </form>
+</div>
+
+
+<div class="flex flex-col flex-auto min-w-0" *ngIf="data.typeAlert == 'COMPANY_QUOTE'">
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <h5 class="text-3xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate center">
+                Cuotas
+            </h5>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 w-full mt-8">
+        <form [formGroup]="quotesManagerForm"
+            class="flex flex-col p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
+            <div class="flex flex-col gt-xs:flex-row">
+                <div class="flex flex-col">
+                    <div class="flex flex-col">
+                        <div class="flex">
+                            <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto gt-xs:pl-3">
+                                <mat-label>Gerente</mat-label>
+                                <input [formControlName]="'quoteone'" placeholder="Cuota 1" matInput type="number">
+                                <mat-error>
+                                    Se requiere este campo
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto gt-xs:pl-3">
+                                <mat-label>Team Lider</mat-label>
+                                <input [formControlName]="'quotetwo'" placeholder="Cuota 2" matInput type="number">
+                                <mat-error>
+                                    Se requiere este campo
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field [ngClass]="formFieldHelpers" class="flex-auto gt-xs:pl-3">
+                                <mat-label>Gerente Tareas</mat-label>
+                                <input [formControlName]="'quotethree'" placeholder="Cuota 3" matInput type="number">
+                                <mat-error>
+                                    Se requiere este campo
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                    <button (click)="closeDialog()" type="reset" mat-button [color]="'warn'">
+                        Cancelar
+                    </button>
+                    <button (click)="saveQuotes(data)" class="px-6 ml-3" mat-flat-button [color]="'primary'">
+                        Activar
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden">
+            <div>
+                <table class="w-full bg-transparent" mat-table matSort [dataSource]="recentTransactionsDataSource"
+                    [trackBy]="trackByFn" #recentTransactionsTable>
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                            #
+                        </th>
+                        <td mat-cell *matCellDef="let quote">
+                            <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                {{quote.id}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rol">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                            Rol
+                        </th>
+                        <td mat-cell *matCellDef="let quote">
+                            <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                {{quote.rol}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="quote">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                            Valor cuota
+                        </th>
+                        <td mat-cell *matCellDef="let quote">
+                            <span class="pr-6 font-medium text-sm text-secondary whitespace-nowrap">
+                                {{quote.quote}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                            Acciones
+                        </th>
+                        <td mat-cell *matCellDef="let company">
+                            <div>
+                                <button (click)="editCompany(company)" matTooltip="Editar registro" mat mat-icon-button
+                                    color="primary" aria-label="Example icon button with a vertical three dot icon">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button (click)="deleteCompany(company)" type="submit" matTooltip="Desactivar empresa"
+                                    mat-icon-button color="warn"
+                                    aria-label="Example icon button with a vertical three dot icon">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="recentTransactionsTableColumns"></tr>
+                    <tr class="order-row h-16" mat-row *matRowDef="let row; columns: recentTransactionsTableColumns;">
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
