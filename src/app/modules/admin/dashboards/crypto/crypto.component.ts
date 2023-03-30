@@ -8,7 +8,7 @@ import { CryptoService } from 'app/modules/admin/dashboards/crypto/crypto.servic
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { LegalRepresentativeModel, Person } from 'app/models/legal.representative.model';
+import { Person } from 'app/models/legal.person.model';
 import { fuseAnimations } from '@fuse/animations';
 import { SearchService } from 'app/shared/search.service';
 import { MessagesEnum } from 'app/enums/messages.enum';
@@ -32,7 +32,7 @@ export class CryptoComponent implements OnInit, OnDestroy {
     data: any;
     accountBalanceOptions: ApexOptions;
     recentTransactionsDataSource: MatTableDataSource<any> = new MatTableDataSource();
-    recentTransactionsTableColumns: string[] = ['name', 'commercialName', 'document', 'mobile', 'status', 'actions'];
+    recentTransactionsTableColumns: string[] = ['name', 'document', 'address', 'phone', 'typeCenter', 'description','state', 'actions'];
     _unsubscribeAll: Subject<any> = new Subject<any>();
     registerCompanyForm: UntypedFormGroup;
     updateCompanyBtn: boolean = false
@@ -50,18 +50,13 @@ export class CryptoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.subjectKeyUp.pipe(debounceTime(1000)).subscribe((value) => {
-            this.getCompaniesSearch(value)
-        })
         this.registerCompanyForm = this._formBuilder.group({
             name: ['', Validators.required],
-            commercialName: ['', [Validators.required]],
             document: ['', Validators.required],
+            address: ['', Validators.required],
             phone: ['', Validators.required],
-            mobile: ['', Validators.required],
-            representativeName: ['', Validators.required],
-            representativeLastname: ['', Validators.required],
-            representativeDocument: ['', Validators.required],
+            typeCenter: ['', Validators.required],
+            description: ['', Validators.required]
         });
         this.getAllCompanies()
     }
@@ -100,13 +95,11 @@ export class CryptoComponent implements OnInit, OnDestroy {
     editCompany(company: CompanyModel) {
         this.updateCompanyBtn = true
         this.registerCompanyForm.get('name').setValue(company.name);
-        this.registerCompanyForm.get('commercialName').setValue(company.commercialName);
-        this.registerCompanyForm.get('document').setValue(company.document);
+        this.registerCompanyForm.get('document').setValue(company.ruc);
+        this.registerCompanyForm.get('address').setValue(company.address);
         this.registerCompanyForm.get('phone').setValue(company.phone);
-        this.registerCompanyForm.get('mobile').setValue(company.mobile);
-        this.registerCompanyForm.get('representativeName').setValue(company.legalRepresentative.person.name);
-        this.registerCompanyForm.get('representativeLastname').setValue(company.legalRepresentative.person.lastName);
-        this.registerCompanyForm.get('representativeDocument').setValue(company.legalRepresentative.person.document);
+        this.registerCompanyForm.get('typeCenter').setValue(company.typeCenter);
+        this.registerCompanyForm.get('description').setValue(company.description);
         this.idCompany = company.id
     }
 
@@ -126,29 +119,19 @@ export class CryptoComponent implements OnInit, OnDestroy {
             this.getAllCompanies()
             this.alertService.showAlertMessage('info', 'Registro actualizado !')
         }, (response: HttpErrorResponse) => {
-            this.alertService.showAlertMessage('error', response.error.message)
+            this.alertService.showAlertMessage('error', response.error.mensaje)
             this.registerCompanyForm.enable()
         })
     }
 
     buildCompanyModel(): CompanyModel {
-        const person: Person = {
-            name: this.registerCompanyForm.value.representativeName,
-            lastName: this.registerCompanyForm.value.representativeLastname,
-            document: this.registerCompanyForm.value.representativeDocument
-        }
-
-        const legal: LegalRepresentativeModel = {
-            person: person
-        }
-
         const companyModel: CompanyModel = {
             name: this.registerCompanyForm.value.name,
-            commercialName: this.registerCompanyForm.value.commercialName,
-            document: this.registerCompanyForm.value.document,
-            mobile: this.registerCompanyForm.value.mobile,
-            phone: this.registerCompanyForm.value.mobile,
-            legalRepresentative: legal,
+            ruc: this.registerCompanyForm.value.document,
+            address: this.registerCompanyForm.value.address,
+            phone: this.registerCompanyForm.value.phone,
+            typeCenter: this.registerCompanyForm.value.typeCenter,
+            description: this.registerCompanyForm.value.description
         }
 
         return companyModel
@@ -161,43 +144,6 @@ export class CryptoComponent implements OnInit, OnDestroy {
         }, (response: HttpErrorResponse) => {
             this.alertService.showAlertMessage('error', response.error.message)
         })
-    }
-
-    searchCompany(event: any) {
-        if (event.code == 'Enter') {
-            this.getCompaniesSearch(event.target.value)
-        } else {
-            this.subjectKeyUp.next(event.target.value)
-        }
-    }
-
-    getCompaniesSearch(value: string) {
-        this.searchService.genericSearch(value, 'company').subscribe(data => {
-            this.data = data;
-            this.recentTransactionsDataSource.data = data.reverse();
-            this.alertService.hideAlertMessage()
-        }, (response: any) => {
-            this.alertService.showAlertMessage('warning', MessagesEnum.DEFAULT_MESSAGE_ERROR)
-        });
-    }
-
-    activateCompany(company: CompanyModel) {
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-            width: '500px',
-            data: { data: company, typeAlert: ALERT_REASONS.COMPANY_MANAGER },
-        });
-        dialogRef.afterClosed().subscribe(result => {
-
-        });
-    }
-
-    quote(company: CompanyModel) {
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-            data: { data: company, typeAlert: ALERT_REASONS.COMPANY_QUOTE },
-        });
-        dialogRef.afterClosed().subscribe(result => {
-
-        });
     }
 
     dismiss(name: string) {
